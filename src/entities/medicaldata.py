@@ -38,7 +38,7 @@ class MedicalData:
 
         return self.df[self.df["Month"] == month]["BNF Code"].nunique()
 
-    def get_product_description(self, bnf_code: str) -> str:
+    def product_description(self, bnf_code: str) -> str:
         """Product description (VMP_NM) based on the code (BNF Code)"""
 
         return self.bnf_code_vmp_nm.get(bnf_code, "Not valid BNF Code")
