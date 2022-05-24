@@ -1,7 +1,9 @@
+import os
+
 from dataclasses import dataclass
 from typing import Optional
 import pandas as pd
-import os
+
 
 
 @dataclass
@@ -10,7 +12,7 @@ class MedicalData:
     bnf_code_vmp_nm: dict
 
     @staticmethod
-    def load_csv_files():
+    def load_csv_files() -> "MedicalData":
         df = pd.DataFrame()
         for file in os.listdir("static"):
             if file.endswith(".csv"):
@@ -20,6 +22,7 @@ class MedicalData:
                 df = df.append(temp)
 
         bnf_code_vmp_nm = dict(zip(df["BNF Code"], df["VMP_NM"]))
+        df = df[['Month','Gross Cost (£)','Total Items','BNF Code']]
 
         return MedicalData(df, bnf_code_vmp_nm)
 
@@ -31,7 +34,7 @@ class MedicalData:
     def avg_total_items(self, month: int) -> Optional[float]:
         """Average number of products (Total Items) in the selected period (month resolution)"""
 
-        return self.df[self.df["Month"] == month]["Gross Cost (£)"].mean()
+        return self.df[self.df["Month"] == month]["Total Items"].mean()
 
     def nunique_bnf_codes(self, month: int) -> Optional[int]:
         """Number of prescriptions in the selected period (month resolution) according to the code (BNF Code)"""

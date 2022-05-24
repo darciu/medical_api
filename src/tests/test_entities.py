@@ -1,8 +1,10 @@
-from src.entities.medicaldata import MedicalData
+"""Tests"""
 import math
 
-md = MedicalData.load_csv_files()
+from src.entities.medicaldata import MedicalData
 
+
+md = MedicalData.load_csv_files()
 
 def test_dummy():
     assert 1==1
