@@ -15,7 +15,6 @@ def test_medical_data_existence():
     assert len(md.bnf_code_vmp_nm) != 0
     assert md.bnf_code_vmp_nm.get('0107010Z0BCAAAE') == 'Generic Anusol cream'
 
-
 def test_avg_gross_cost():
     assert md.avg_gross_cost(2) > 0
     assert math.isnan(md.avg_gross_cost(10))
