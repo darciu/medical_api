@@ -11,17 +11,19 @@ from entities.snowflakedata import SnowflakeDataConnector
 router = APIRouter()
 
 
-@router.get("/get_avg_gross_cost")
-def get_avg_gross_cots(request: Request, month: int, choice: str = Query("local", enum=["local", "remote"])) -> Optional[float]:
-    if choice=='local':
+
+
+@router.get("/get_avg_gross_cost",tags=["get_avg_gross_cost"])
+def get_avg_gross_cots(request: Request, month: int, data_source: str = Query("local", enum=["local", "remote"])) -> Optional[float]:
+    if data_source=='local':
         medical_data = request.app.state.medical_data
         return medical_data.avg_gross_cost(month)
-    elif choice=='remote':
+    elif data_source=='remote':
         sf_conn = SnowflakeDataConnector(environ.get('SNOWFLAKE_USER'),environ.get('SNOWFLAKE_PASS'),environ.get('SNOWFLAKE_ACCOUNT'))
         query = f"select avg(gross_cost) as avg_cost from kinesso_task.public.csv where month = {month}"
         return sf_conn.get_data_one_result(query)
 
-@router.get("/get_avg_total_items")
+@router.get("/get_avg_total_items",tags=["get_avg_total_items"])
 def get_avg_total_items(request: Request, month: int, choice: str = Query("local", enum=["local", "remote"])) -> Optional[float]:
     if choice=='local':
         medical_data = request.app.state.medical_data
@@ -32,7 +34,7 @@ def get_avg_total_items(request: Request, month: int, choice: str = Query("local
         return sf_conn.get_data_one_result(query)
 
 
-@router.get("/get_nunique_bnf_codes")
+@router.get("/get_nunique_bnf_codes",tags=["get_nunique_bnf_codes"])
 def get_nunique_bnf_codes(request: Request, month: int, choice: str = Query("local", enum=["local", "remote"])) -> Optional[int]:
     if choice=='local':
         medical_data = request.app.state.medical_data
@@ -43,7 +45,7 @@ def get_nunique_bnf_codes(request: Request, month: int, choice: str = Query("loc
         return sf_conn.get_data_one_result(query)
 
 
-@router.get("/get_product_description")
+@router.get("/get_product_description",tags=["get_product_description"])
 def get_product_description(request: Request, bnf_code: str, choice: str = Query("local", enum=["local", "remote"])) -> str:
     if choice=='local':
         medical_data = request.app.state.medical_data

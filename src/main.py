@@ -8,7 +8,26 @@ from entities.medicaldata import MedicalData
 import logging
 
 
-app = FastAPI()
+tags_metadata = [
+    {
+        "name": "get_avg_gross_cost",
+        "description": "Average cost of prescriptions (Gross Cost) in the selected period (month resolution)",
+    },
+    {
+        "name": "get_avg_total_items",
+        "description": "Average number of products (Total Items) in the selected period (month resolution)",
+    },
+    {
+        "name": "get_nunique_bnf_codes",
+        "description": "Number of prescriptions in the selected period (month resolution) according to the code (BNF Code)",
+    },
+    {
+        "name": "get_product_description",
+        "description": "Product description (VMP_NM) based on the code (BNF Code)",
+    }
+    ]
+
+app = FastAPI(openapi_tags=tags_metadata)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
