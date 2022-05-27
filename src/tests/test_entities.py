@@ -1,6 +1,5 @@
 """Tests"""
 from os import environ
-import math
 
 from src.entities.medicaldata import MedicalData
 from src.entities.snowflakedata import SnowflakeDataConnector
@@ -34,11 +33,11 @@ def test_medical_data_existence():
 
 def test_avg_gross_cost():
     assert md.avg_gross_cost(2) > 0
-    assert math.isnan(md.avg_gross_cost(10))
+    assert md.avg_gross_cost(10) == 0
 
 def test_avg_total_items():
     assert md.avg_total_items(2) > 0
-    assert math.isnan(md.avg_total_items(10))
+    assert md.avg_total_items(10) == 0
 
 def test_nunique_bnf_codes():
     assert md.nunique_bnf_codes(1) > 0
@@ -46,6 +45,7 @@ def test_nunique_bnf_codes():
 
 def test_get_product_description():
     assert md.product_description('23354103785') == 'Colostomy bags'
+
 
 
 def test_snowflake_connection():

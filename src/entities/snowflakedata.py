@@ -17,8 +17,9 @@ class SnowflakeDataConnector:
         try:
             cs.execute(query)
             one_row = cs.fetchone()
-            cs.close()
-            ctx.close()
             return one_row[0]
         except:
             return "Connector could not retrieve any data. Chceck your query"
+        finally:
+            cs.close()
+            ctx.close()

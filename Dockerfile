@@ -11,11 +11,9 @@ RUN pip3.9 install -r /code/requirements.txt
 
 WORKDIR /code/
 
-RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env
-
-ENV SNOWFLAKE_PASS=${SNOWFLAKE_PASS}
-ENV SNOWFLAKE_USER=${SNOWFLAKE_USER}
-ENV SNOWFLAKE_ACCOUNT=${SNOWFLAKE_ACCOUNT}
+RUN --mount=type=secret,id=my_env cat /run/secrets/my_env \
+    && export SNOWFLAKE_USER=${SNOWFLAKE_USER} && export SNOWFLAKE_PASS=${SNOWFLAKE_PASS} \
+    && export SNOWFLAKE_ACCOUNT=${SNOWFLAKE_ACCOUNT}
 
 EXPOSE 8000
 

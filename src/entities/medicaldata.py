@@ -1,4 +1,5 @@
 import os
+import math
 
 from dataclasses import dataclass
 from typing import Optional
@@ -28,18 +29,18 @@ class MedicalData:
 
     def avg_gross_cost(self, month: int) -> Optional[float]:
         """Average cost of prescriptions (Gross Cost) in the selected period (month resolution)"""
-
-        return self.df[self.df["Month"] == month]["Gross Cost (£)"].mean()
+        val = self.df[self.df["Month"] == month]["Gross Cost (£)"].mean()
+        return 0 if math.isnan(val) else val
 
     def avg_total_items(self, month: int) -> Optional[float]:
         """Average number of products (Total Items) in the selected period (month resolution)"""
-
-        return self.df[self.df["Month"] == month]["Total Items"].mean()
+        val = self.df[self.df["Month"] == month]["Total Items"].mean()
+        return 0 if math.isnan(val) else val
 
     def nunique_bnf_codes(self, month: int) -> Optional[int]:
         """Number of prescriptions in the selected period (month resolution) according to the code (BNF Code)"""
-
-        return self.df[self.df["Month"] == month]["BNF Code"].nunique()
+        val = self.df[self.df["Month"] == month]["BNF Code"].nunique()
+        return 0 if math.isnan(val) else val
 
     def product_description(self, bnf_code: str) -> str:
         """Product description (VMP_NM) based on the code (BNF Code)"""
