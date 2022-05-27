@@ -6,7 +6,6 @@ from typing import Optional
 import pandas as pd
 
 
-
 @dataclass
 class MedicalData:
     df: pd.DataFrame
@@ -23,7 +22,7 @@ class MedicalData:
                 df = df.append(temp)
 
         bnf_code_vmp_nm = dict(zip(df["BNF Code"], df["VMP_NM"]))
-        df = df[['Month','Gross Cost (£)','Total Items','BNF Code']]
+        df = df[["Month", "Gross Cost (£)", "Total Items", "BNF Code"]]
 
         return MedicalData(df, bnf_code_vmp_nm)
 

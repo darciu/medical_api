@@ -2,17 +2,15 @@ import snowflake.connector
 
 
 class SnowflakeDataConnector:
-    def __init__(self,user,password,account):
-        self.user=user
-        self.password=password
-        self.account=account
+    def __init__(self, user: str, password: str, account: str):
+        self.user = user
+        self.password = password
+        self.account = account
 
-    def get_data_one_result(self,query:str) -> str or int:
+    def get_data_one_result(self, query: str) -> str or int:
         ctx = snowflake.connector.connect(
-            user=self.user,
-            password=self.password,
-            account=self.account
-            )
+            user=self.user, password=self.password, account=self.account
+        )
         cs = ctx.cursor()
         try:
             cs.execute(query)
