@@ -24,33 +24,33 @@ def get_avg_gross_cots(request: Request, month: int, data_source: str = Query("l
         return sf_conn.get_data_one_result(query)
 
 @router.get("/get_avg_total_items",tags=["get_avg_total_items"])
-def get_avg_total_items(request: Request, month: int, choice: str = Query("local", enum=["local", "remote"])) -> Optional[float]:
-    if choice=='local':
+def get_avg_total_items(request: Request, month: int, data_source: str = Query("local", enum=["local", "remote"])) -> Optional[float]:
+    if data_source=='local':
         medical_data = request.app.state.medical_data
         return medical_data.avg_total_items(month)
-    elif choice=='remote':
+    elif data_source=='remote':
         sf_conn = SnowflakeDataConnector(environ.get('SNOWFLAKE_USER'),environ.get('SNOWFLAKE_PASS'),environ.get('SNOWFLAKE_ACCOUNT'))
         query = f"select avg(total_items) as avg_total_items from kinesso_task.public.csv where month = {month}"
         return sf_conn.get_data_one_result(query)
 
 
 @router.get("/get_nunique_bnf_codes",tags=["get_nunique_bnf_codes"])
-def get_nunique_bnf_codes(request: Request, month: int, choice: str = Query("local", enum=["local", "remote"])) -> Optional[int]:
-    if choice=='local':
+def get_nunique_bnf_codes(request: Request, month: int, data_source: str = Query("local", enum=["local", "remote"])) -> Optional[int]:
+    if data_source=='local':
         medical_data = request.app.state.medical_data
         return medical_data.nunique_bnf_codes(month)
-    elif choice=='remote':
+    elif data_source=='remote':
         sf_conn = SnowflakeDataConnector(environ.get('SNOWFLAKE_USER'),environ.get('SNOWFLAKE_PASS'),environ.get('SNOWFLAKE_ACCOUNT'))
         query = f"select count(distinct bnf_code) from kinesso_task.public.csv where month = {month}"
         return sf_conn.get_data_one_result(query)
 
 
 @router.get("/get_product_description",tags=["get_product_description"])
-def get_product_description(request: Request, bnf_code: str, choice: str = Query("local", enum=["local", "remote"])) -> str:
-    if choice=='local':
+def get_product_description(request: Request, bnf_code: str, data_source: str = Query("local", enum=["local", "remote"])) -> str:
+    if data_source=='local':
         medical_data = request.app.state.medical_data
         return medical_data.product_description(bnf_code)
-    elif choice=='remote':
+    elif data_source=='remote':
         sf_conn = SnowflakeDataConnector(environ.get('SNOWFLAKE_USER'),environ.get('SNOWFLAKE_PASS'),environ.get('SNOWFLAKE_ACCOUNT'))
         query = f"select distinct(vmp_nm) from kinesso_task.public.csv where bnf_code = '{bnf_code}'"
         return sf_conn.get_data_one_result(query)
